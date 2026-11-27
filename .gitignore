@@ -16,3 +16,11 @@ node_modules/
 __pycache__/
 .venv/
 venv/
+
+# mini_fkdb 数据与产物
+data/
+*.heap
+wal.log
+gen_meta.json
+# 实验报告保留入库，忽略运行期其它临时产物
+experiments/out/*.tmp

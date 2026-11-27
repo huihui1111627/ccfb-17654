@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mini_fkdb 外键级联控制台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>mini_fkdb <span class="sub">自写关系存储 · 外键级联影响分析</span></h1>
+  <div id="integrity" class="pill pill-unknown">完整性检查中…</div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="impact">级联影响树</button>
+  <button class="tab" data-tab="browser">表数据浏览</button>
+  <button class="tab" data-tab="batch">批量客户预估/删除</button>
+  <button class="tab" data-tab="report">并发实验报告</button>
+</nav>
+
+<main>
+  <!-- ================= 级联影响树 ================= -->
+  <section id="tab-impact" class="panel active">
+    <div class="toolbar">
+      <label>表
+        <select id="impact-table"></select>
+      </label>
+      <label>行 ID
+        <input id="impact-id" type="number" min="1" value="1" style="width:90px">
+      </label>
+      <button id="btn-impact" class="primary">分析级联影响</button>
+      <span class="hint">选择任意一行，预览删除它会沿哪些外键传播、每张表动多少行</span>
+    </div>
+    <div id="impact-summary" class="summary-cards"></div>
+    <div id="impact-blocked" class="blocked-box hidden"></div>
+    <div class="split">
+      <div>
+        <h3>影响树（动作 / 外键 / 链长）</h3>
+        <div id="impact-tree" class="tree"></div>
+      </div>
+      <div>
+        <h3>逐表动作计数（预估）</h3>
+        <table id="impact-counts" class="data"></table>
+      </div>
+    </div>
+    <div class="toolbar danger-zone">
+      <button id="btn-delete-one" class="danger">一次性级联删除</button>
+      <label>拆批每批根行数
+        <input id="batch-size" type="number" value="25" min="1" style="width:70px">
+      </label>
+      <button id="btn-delete-batch" class="warn">拆批级联删除</button>
+      <span id="delete-result" class="hint"></span>
+    </div>
+  </section>
+
+  <!-- ================= 表浏览 ================= -->
+  <section id="tab-browser" class="panel">
+    <div class="toolbar">
+      <label>选择表
+        <select id="browse-table"></select>
+      </label>
+      <button id="btn-browse">加载</button>
+      <span id="browse-meta" class="hint"></span>
+    </div>
+    <div class="table-wrap">
+      <table id="browse-data" class="data"></table>
+    </div>
+  </section>
+
+  <!-- ================= 批量 ================= -->
+  <section id="tab-batch" class="panel">
+    <div class="toolbar">
+      <label>表
+        <select id="batch-table"></select>
+      </label>
+      <label>行 ID 列表（逗号分隔）
+        <input id="batch-ids" value="1,2,3" style="width:260px">
+      </label>
+      <button id="btn-batch-estimate" class="primary">批量预估</button>
+    </div>
+    <div id="batch-summary" class="summary-cards"></div>
+    <table id="batch-counts" class="data"></table>
+    <div id="batch-blocked" class="blocked-box hidden"></div>
+  </section>
+
+  <!-- ================= 报告 ================= -->
+  <section id="tab-report" class="panel">
+    <div class="toolbar">
+      <button id="btn-load-report" class="primary">加载实验报告</button>
+      <span class="hint">读取 experiments/out/report.json</span>
+    </div>
+    <div id="report-body"></div>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
